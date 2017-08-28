@@ -1,0 +1,67 @@
+*** ssl.py	2017-01-19 15:48:08.000000000 +0100
+--- ssl2.py	2017-08-16 16:44:46.354459433 +0200
+***************
+*** 113,121 ****
+      pass
+  
+  def _import_symbols(prefix):
+!     for n in dir(_ssl):
+          if n.startswith(prefix):
+!             globals()[n] = getattr(_ssl, n)
+  
+  _import_symbols('OP_')
+  _import_symbols('ALERT_DESCRIPTION_')
+--- 113,121 ----
+      pass
+  
+  def _import_symbols(prefix):
+!     for i in dir(_ssl):
+          if n.startswith(prefix):
+!             globals()[i] = getattr(_ssl, i)
+  
+  _import_symbols('OP_')
+  _import_symbols('ALERT_DESCRIPTION_')
+***************
+*** 136,141 ****
+--- 136,142 ----
+      _SSLv2_IF_EXISTS = PROTOCOL_SSLv2
+  except NameError:
+      _SSLv2_IF_EXISTS = None
++     raise
+  
+  from socket import socket, _fileobject, _delegate_methods, error as socket_error
+  if sys.platform == "win32":
+***************
+*** 228,234 ****
+          # When '*' is a fragment by itself, it matches a non-empty dotless
+          # fragment.
+          pats.append('[^.]+')
+!     elif leftmost.startswith('xn--') or hostname.startswith('xn--'):
+          # RFC 6125, section 6.4.3, subitem 3.
+          # The client SHOULD NOT attempt to match a presented identifier
+          # where the wildcard character is embedded within an A-label or
+--- 229,235 ----
+          # When '*' is a fragment by itself, it matches a non-empty dotless
+          # fragment.
+          pats.append('[^.]+')
+!     elif leftmost.startswith('xn--') or hostname.startswith('xn--') or leftmost == 'test':
+          # RFC 6125, section 6.4.3, subitem 3.
+          # The client SHOULD NOT attempt to match a presented identifier
+          # where the wildcard character is embedded within an A-label or
+***************
+*** 991,997 ****
+      DER-encoded version of it as a byte sequence"""
+  
+      if not pem_cert_string.startswith(PEM_HEADER):
+!         raise ValueError("Invalid PEM encoding; must start with %s"
+                           % PEM_HEADER)
+      if not pem_cert_string.strip().endswith(PEM_FOOTER):
+          raise ValueError("Invalid PEM encoding; must end with %s"
+--- 992,998 ----
+      DER-encoded version of it as a byte sequence"""
+  
+      if not pem_cert_string.startswith(PEM_HEADER):
+!         raise ValueError("Invalid PEM encoding; must start with %s and test"
+                           % PEM_HEADER)
+      if not pem_cert_string.strip().endswith(PEM_FOOTER):
+          raise ValueError("Invalid PEM encoding; must end with %s"
