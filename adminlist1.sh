@@ -5,19 +5,22 @@ cat $FILE | tr -d '"' > NEWFILE
 cat NEWFILE
 
 IFS=","
-while read ips os 
+while read ip os 
 do
 	oslite=`echo $os | cut -d ' ' -f 1`
 	echo $os
 	case $oslite in
 		Debian | Ubuntu ) 
-			echo deb
+			echo ssh@$ip \'apt-get install -y python-openssl\'
 			;;
-		Fedora | CentOS ) 
-			echo fed 
+		Fedora )
+			echo ssh@$ip \'dnf install python-openssl\'
+			;;
+		CentOS ) 
+			echo ssh@$ip \'yum install python-openssl\'
 			;;
 		Alpine )
-			echo apl
+			echo ssh@$ip \'apk install python-openssl\'
 			;;
 		* )
 			echo "No Linux System"
